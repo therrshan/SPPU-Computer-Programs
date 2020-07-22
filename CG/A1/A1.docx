@@ -1,0 +1,208 @@
+/*
+Assignment A1
+Aim:-Write c++\java programe to draw line using DDA & Bresenham's algorithm inherit pixel class and use function overloading 
+*/
+
+
+ #include<graphics.h>
+#include<iostream>
+
+using namespace std;
+
+class pixel
+{
+           float dx,dy,x,y;
+      
+   public:  int x1,y1,x2,y2;
+            float c,xa,ya,xb,yb;
+            void Drawline(int,int,int,int);
+            void Drawline(float,float,float,float);    
+};
+
+
+class point : public pixel
+{
+
+            pixel p;
+  public:
+            void getdata1()
+            {
+                 cout<<"\n Enter the integer type value x1,y1,x2,y2";
+                 cin>>p.x1;
+cin>>p.y1;
+cin>>p.x2;
+cin>>p.y2;
+                 Drawline(p.x1,p.y1,p.x2,p.y2);
+            }
+            void getdata2()
+            {
+               
+                 cout<<"\n Enter the floating type values xa,ya,xb,yb";
+                 cin>>p.xa;
+cin>>p.ya;
+cin>>p.xb;
+cin>>p.yb;
+                 Drawline(p.xa,p.ya,p.xb,p.yb);
+            }
+};
+
+
+void pixel::Drawline(int dx1,int dy1,int dx2,int dy2)
+{
+  
+         //  cout<<"\n Implementation of DDA Line Drawing Algorithm";
+     
+   
+           float steps,xinc,yinc,i;
+      
+           dx=abs(dx2-dx1);
+           dy=abs(dy2-dy1);
+   
+           if(dx>=dy)
+           {
+                steps=dx;
+           }
+           else
+           {
+                steps=dy;
+           }
+
+           xinc=(dx2-dx1)/steps;
+           yinc=(dy2-dy1)/steps;
+
+           x=dx1+(0.5*signbit(xinc));
+           y=dy1+(0.5*signbit(yinc));
+
+           while(i<=steps)
+           {
+                 x=x+xinc;
+                 y=y+yinc;
+                 putpixel(x,y,15);
+                 i=i+1;
+           }
+}
+
+void pixel::Drawline(float bx1,float by1,float bx2,float by2)
+{  
+
+          // cout<<"\n Implementation of Bresenhams Line Drawing Algorithm";
+     
+           float p,xend;
+     
+           dx=abs(bx2-bx1);
+           dy=abs(by2-by1);
+
+           p=((2*dy)-dx);
+
+           if(bx1>bx2)
+           {
+                  x=bx2;
+                  y=by2;
+                  xend=bx1;
+           }
+           else
+           {
+                  x=bx1;
+                  y=by1;
+                  xend=bx2;
+           }
+    
+           putpixel (x,y,15);
+    
+           while(x<xend)
+           {
+                  x=x+1;
+                 
+                  if (p<0)
+                  {
+                        p=p+2*dy;
+                  }
+                  else
+                  {
+                        y=y+1;
+                        p=p+2*(dy-dx);
+                  }
+                 
+                  putpixel (x,y,15);          
+           }
+}
+
+
+int main()
+{
+      int gd=DETECT,gm;
+     
+    
+      int ch;
+      char choice;
+          
+      point pt;
+
+      do
+      {
+
+             cout<<"\n Welcome to Line Drawing";
+             cout<<"\n 1. DDA ALGORITHM";
+             cout<<"\n 2. BRESENHAMS ALGORITHM";
+             cin>>ch;
+ 	initgraph(&gd,&gm,NULL);
+             switch(ch)
+             {
+                    case 1:
+                              cout<<"\n DDA ALGORITHM";
+                              pt.getdata1();
+                              break;
+
+                    case 2:
+                              cout<<"\n BRESENHAMS ALGORITHM";
+                              pt.getdata2();
+                              break;
+             }
+             cout<<"\n Do you want to continue(y\n)";
+             cin>>ch;
+       }while(ch=='y'|| ch== 'Y');
+
+
+       delay(50000);
+       closegraph();
+       return 0;
+}
+
+
+
+
+
+
+OUTPUT:- 
+
+roo@aissms-ThinkCentre-M72e:~/cg$ g++ A1.cpp -lgraph
+roo@aissms-ThinkCentre-M72e:~/cg$ ./a.out
+
+ Welcome to Line Drawing
+ 1. DDA ALGORITHM
+ 2. BRESENHAMS ALGORITHM
+1
+
+ DDA ALGORITHM
+ Enter the integer type value x1,y1,x2,y2
+100
+150
+200
+250
+ Do you want to continue(y
+)y
+2
+BRESENHAMS ALGORITHM
+ Enter the floating type values xa,ya,xb,yb
+
+100
+150
+200
+250
+
+
+
+
+
+
+

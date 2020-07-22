@@ -1,0 +1,86 @@
+#include<iostream>
+#include<graphics.h>
+using namespace std;
+
+class fill1
+{
+public:
+int i,j,n;
+float a[10][2];
+
+void getdata()
+{
+cout<<"\nEnter no of sides of polygon";
+cin>>n;
+cout<<"\nEnter the co-ordinates";
+for(i=0;i<n;i++)
+{
+cout<<"\nEnter co-ordinates of vertex "<<i+1;
+cin>>a[i][0]>>a[i][1];
+}
+}
+
+
+void dda(float x1,float y1,float x2,float y2)
+{
+float dx,dy,m,xinc,yinc;
+int steps;
+dx=x2-x1;
+dy=y2-y1;
+m=dy/dx;
+if(abs(dx)>abs(dy))
+{steps=abs(dx);
+}else
+steps=abs(dy);
+xinc=dx/steps;
+yinc=dy/steps;
+int x;
+for(int i=1;i<=steps;i++)
+{
+putpixel(x1,y1,5);
+x1=x1+xinc;
+y1=y1+yinc;
+}
+}
+
+void draw()
+{
+for(i=0;i<n;i++)
+{
+if(i==n-1)
+dda(a[i][0],a[i][1],a[0][0],a[0][1]);
+else
+dda(a[i][0],a[i][1],a[i+1][0],a[i+1][1]);
+}
+}
+
+void sf(float x,float y,float z,float col)
+{
+float cur;
+cur=getpixel(x,y);
+if(cur!=col&&cur==z)
+{
+putpixel(x,y,col);
+sf(x-1,y,z,col);
+sf(x+1,y,z,col);
+sf(x,y-1,z,col);
+sf(x,y+1,z,col);
+}
+}
+
+};
+
+int main()
+{
+fill1 f;
+f.getdata();
+int x,y;
+cout<<"\nEnter the co-ordinates of the seed";
+cin>>x>>y;
+int gd=DETECT,gm;
+initgraph(&gd,&gm,NULL);
+f.draw();
+float k=getbkcolor();
+f.sf(x,y,k,1);
+getch();
+}
